@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> INLAB FHIR Engine (HAPI Test) </title>
+    <style>   
+      Body {  
+        background-image:
+        url('https://cdn.dribbble.com/users/1006753/screenshots/4516273/healthcare-animation.gif');
+        font-family: Calibri, Helvetica, sans-serif;  
+        background-size: 1400px;
+        background-attachment: fixed;
+        background-position: center;
+
+      }  
+      h1 {
+          width:700px;
+          margin: 0 auto;
+          text-align: center;
+          display: block;
+          color: grey;
+       
+         
+      } 
+      h2 {
+        width:400px;
+        margin: auto auto;
+        text-align: center;
+        display: block;
+        background: teal;
+       
+    } 
+      form {
+        width:400px;
+        margin: 0 auto;
+        text-align: center;
+        display: block;
+ 
+       
+    } 
+    label {
+      width:100px;
+      margin: 0 auto;
+      text-align: center;
+      display: block;
+      background: teal;
+     
+  } 
+      button {   
+        background-color: grey;   
+        width: 50%; 
+        color: orange;   
+        padding: 15px;   
+        margin: 80px 480px;   
+        border: none;   
+        cursor: pointer;   
+          }  
+      button:hover {   
+            opacity: 0.7;   
+        }  
+  
+           
+      </style> 
+    <body>
+      <link href='https://fonts.googleapis.com/css?family=Iceland' rel='stylesheet'>
+      <h1 style="font-family: 'Iceland';font-size: 55px;">INLAB FHIR Engine (HAPI Test)</h1>     
+<br><br><br>
+      <form method="POST" action="http://203.247.240.226:8080/fhir/Patient/koman">
+        <input type="hidden" name="_METHOD" value="PUT"/>
+        <label>resourceType</label>
+        <input type="text" placeholder="resourceType" name="resourceType"><br><br>
+        
+        <label for="id">ID:</label>
+        <input id="id" name="id" value="id">
+        <br>
+        <!-- <label>Name  </label>
+        <input type="text" placeholder="name" name="name"><br><br>
+        <label>Use </label>
+        <input type="text" placeholder="use" name="use"><br><br>
+        <label>Family Name </label>
+        <input type="text" placeholder="family" name="family"><br><br>
+        -->
+        <input type="Submit" value="Submit"  style="height:50px; width:80px">
+      </form>
+      <form method="GET" action="http://203.247.240.226:8080/fhir/Patient/sithu">
+        <label>Health Data Type </label>
+
+        <input type="Submit" value="Submit"  style="height:50px; width:80px">
+      </form>
+    </body>
+  </head>
+</html>

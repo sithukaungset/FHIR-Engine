@@ -1,0 +1,99 @@
+doctype html
+head
+  title INLAB FHIR Engine 
+  style.
+    Body {
+    background-image:
+    url(' https://media.istockphoto.com/videos/futuristic-bright-white-big-scifi-corridor-room-with-reflections-and-video-id1044196152?s=640x640');    
+    font-family: Calibri, Helvetica, sans-serif;
+    background-size: 2000px;
+    background-attachment: fixed;
+    background-position: center;
+
+    }
+    h1 {
+    width:400px;
+    margin: 0 auto;
+    text-align: center;
+    display; block;
+    background: teal;
+    }
+    h2 {
+    width:400px;
+    margin: 0 auto;
+    text-align: center;
+    display; block;
+    background: teal;
+    }
+    form {
+    width:400px;
+    margin: 0 auto;
+    text-align: center;
+    display; block;
+    }
+    label {
+    width:400px;
+    margin: 0 auto;
+    text-align: center;
+    display; block;
+    background: teal;
+    }
+    button {
+    background-color: grey;
+    width: 400px;
+    color: orange;
+    margin: 20px 300px;
+    padding: 5px;
+    justify-content: center;
+   
+    border: none;
+    cursor: pointer;
+    }
+    button:hover {
+    opacity: 0.7;
+    }
+    .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    }
+h1 XR Edge Chain
+.center
+    button#myButton1(style='font-size:25px;' onclick="location.href = 'http://203.247.240.226:22650/api/queryallEHRs';" data-inline='true') View All EHR Data
+
+br
+br
+br
+form(method='POST' action='/api/create')
+  label Health Data ID :  
+  input(type='text' placeholder='EHRNumber' name='EHRNumber')
+  br
+  br
+  label PatientID  
+  input(type='text' placeholder='patientID' name='patientID')
+  br
+  br
+  label DateTime  
+  input(type='text' placeholder='DateTime' name='DateTime')
+  br
+  br
+  label Organization
+  input(type='text' placeholder='Organization' name='Organization')
+  br
+  br
+  label Patient Name :  
+  input(type='text' placeholder='patientName' name='patientName')
+  br
+  br
+  label Function :  
+  input(type='text' placeholder='Function' name='Function')
+  br
+  br
+  label Data :  
+  input(type='text' placeholder='data' name='data')
+  br
+  br
+
+
+  input(type='Submit' value='Submit' style='height:50px; width:80px')

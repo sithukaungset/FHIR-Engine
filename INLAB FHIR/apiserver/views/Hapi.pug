@@ -1,0 +1,86 @@
+doctype html
+head
+  title INLAB FHIR Engine (HAPI Test) 
+  style.
+    Body {
+    background-image:
+    url(' https://thehealthcaretechnologyreport.com/wp-content/uploads/2021/03/AI-And-Human-Accountability-in-Healthcare.jpg');    
+    font-family: Calibri, Helvetica, sans-serif;
+    background-size: 2000px;
+    background-attachment: fixed;
+    background-position: center;
+
+    }
+    h1 {
+    width:400px;
+    margin: 0 auto;
+    text-align: center;
+    display; block;
+    background: teal;
+    }
+    h2 {
+    width:400px;
+    margin: 0 auto;
+    text-align: center;
+    display; block;
+    background: teal;
+    }
+    form {
+    width:400px;
+    margin: 0 auto;
+    text-align: center;
+    display; block;
+    }
+    label {
+    width:400px;
+    margin: 0 auto;
+    text-align: center;
+    display; block;
+    background: teal;
+    }
+    button {
+    background-color: grey;
+    width: 400px;
+    color: orange;
+    margin: 20px 300px;
+    padding: 5px;
+    justify-content: center;
+   
+    border: none;
+    cursor: pointer;
+    }
+    button:hover {
+    opacity: 0.7;
+    }
+    .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    }
+h1 INLAB FHIR Engine (HAPI Test)
+.center
+    button#myButton1(style='font-size:25px;' onclick="location.href = 'http://203.247.240.226:22650/api/queryallEHRs';" data-inline='true') View All EHR Data
+
+br
+br
+br
+form(method='POST' action='/203.247.240.226;8080/fhir/Patient')
+  label Health Data Type :  
+  input(type='text' placeholder='resourceType' name='resourceType')
+  br
+  br
+  label Name  
+  input(type='text' placeholder='name' name='name')
+  br
+  br
+  label Use  
+  input(type='text' placeholder='use' name='use')
+  br
+  br
+  label Family Name
+  input(type='text' placeholder='family' name='family')
+  br
+  br
+
+  input(type='Submit' value='Submit' style='height:50px; width:80px')

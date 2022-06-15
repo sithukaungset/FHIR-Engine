@@ -1,0 +1,70 @@
+doctype html
+head
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  title  INLAB FHIR Engine 
+  style.
+    Body {
+    background-image:
+    url('https://i.pinimg.com/originals/d4/55/e3/d455e3be112235e6f70ce41be9ffd6d2.gif');
+    font-family: Calibri, Helvetica, sans-serif;
+    background-size: 1780px;
+    }
+    h1 {
+    width:800px;
+    margin: 0 auto;
+    text-align: center;
+    display: block;
+    color:teal;
+    }
+    button {
+    background-color: grey;
+    width: 5%;
+    color: orange;
+    padding: 15px;
+    margin: 10px 0px;
+    border: none;
+    cursor: pointer;
+    }
+ 
+    input[type=text],
+    input[type=password] {
+    width: 25%;
+    margin: 8px 0;
+    padding: 12px 20px;
+    display: inline-block;
+    border: 2px solid green;
+    box-sizing: border-box;
+    }
+    button:hover {
+    opacity: 0.7;
+    }
+    .cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    margin: 10px 5px;
+    }
+    .container {
+    padding: 2px;
+    background-color: transparent;
+    opacity: 100%;
+    width: 1000px;
+    margin: 5px 605px;
+    }
+link(href='https://fonts.googleapis.com/css?family=Black Ops One' rel='stylesheet')
+center
+  h1(style="font-family: 'Black Ops One';font-size: 55px;")  INLAB FHIR Engine
+form
+  .container
+    p
+      label Username : 
+      input(type='text' placeholder='Enter Username' name='username' required='')
+    p
+      label Password : 
+      input(type='password' placeholder='Enter Password' name='password' required='')
+    button#myButton.float-left.submit-button(onclick="location.href = 'http://203.247.240.226:22650/api/';") Home
+    button(onclick="window.location.href='http://203.247.240.226:22650/api/';" type='submit' value='Submit') Login
+    input(type='checkbox' checked='checked')
+    |  Remember me   
+    button.cancelbtn(type='button')  Cancel
+    |             Forgot 
+    a(href='#')  password? 

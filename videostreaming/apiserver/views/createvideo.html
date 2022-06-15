@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>QOE Accelerator</title>
+    <style>   
+      Body {  
+        background-image:
+        url('https://connects.world/wp-content/uploads/2021/07/blockchain.jpeg');
+        font-family: Calibri, Helvetica, sans-serif;  
+      }  
+      h1 {
+          width:400px;
+          margin: 0 auto;
+          text-align: center;
+          display; block;
+          background: teal;
+         
+      } 
+      h2 {
+        width:400px;
+        margin: auto auto;
+        text-align: center;
+        display; block;
+        background: teal;
+       
+    } 
+      form {
+        width:400px;
+        margin: 0 auto;
+        text-align: center;
+        display; block;
+ 
+       
+    } 
+    label {
+      width:400px;
+      margin: 0 auto;
+      text-align: center;
+      display; block;
+      background: teal;
+     
+  } 
+      button {   
+        background-color: grey;   
+        width: 50%; 
+        color: orange;   
+        padding: 15px;   
+        margin: 80px 480px;   
+        border: none;   
+        cursor: pointer;   
+          }  
+      button:hover {   
+            opacity: 0.7;   
+        }  
+  
+           
+      </style> 
+    <body>
+      <h1>XR Edge Chain</h1>     <button style="font-size:25px;" onclick="location.href = 'http://203.247.240.226:8080/api/queryallvideos';" id="myButton1"  data-inline="true" >View All Video Chunks</button>
+<br><br><br>
+      <form method="POST" action="/api/addvideo">
+        <label>Chunk Number   </label>
+        <input type="text" placeholder="Chunk Number" name="videoNumber"><br><br>
+        <label>User Name   </label>
+        <input type="text" placeholder="User Name" name="userID"><br><br>
+        <label>Chunk Title </label>
+        <input type="text" placeholder="Chunk Title" name="title"><br><br>
+        <label>Chunk Size :  </label>
+        <input type="text" placeholder="Chunk Size" name="chunk_size"><br><br>
+        <label>Resolution :  </label>
+        <input type="text" placeholder="Resolution" name="resolution"><br><br>
+        <label>Date :  </label>
+        <input type="text" placeholder="Date" name="date"><br><br>
+        <label>Hit :  </label>
+        <input type="text" placeholder="Hit" name="hit"><br><br>
+        <input type="Submit" value="Submit"  style="height:50px; width:80px">
+      </form>
+    </body>
+  </head>
+</html>
