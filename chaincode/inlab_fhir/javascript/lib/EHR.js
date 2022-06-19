@@ -16,7 +16,7 @@ class EHR extends Contract {
             {
                 patientID: 'Alice27',
                 DateTime: '2022-3-5',
-                Organization: 'Dongguk Hospital',
+                Organization: 'Dongguk',
                 patientName: 'Alice',
                 Function: 'Create',
                 data: 'Patient EHR'
