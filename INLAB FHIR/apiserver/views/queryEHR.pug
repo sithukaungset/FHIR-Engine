@@ -101,7 +101,7 @@ button#myButton(style='font-size:25px; margin: 40px 900px; height:80px;width:160
     
      each item in list
         ul 
-        li= "  PatientID:  "  +item["Record"]["patientID"]+" <> " + "  DateTime:  "  +item["Record"]["DateTime"]+" <> "
+        li= "  Patient:  "  +item["Record"]["AccountID"]+" <> " + "  DateTime:  "  +item["Record"]["DateTime"]+" <> "
         li= "  Organization:  "  +item["Record"]["Organization"]+" <> " +"  patientName:  "  +item["Record"]["patientName"]+" <> "
         li= "  Function:  "  +item["Record"]["Function"]+" <> " + "  data:  "  +item["Record"]["data"]+" <> "
        

@@ -70,8 +70,8 @@ form(method='POST' action='/api/create')
   input(type='text' placeholder='EHRNumber' name='EHRNumber')
   br
   br
-  label PatientID  
-  input(type='text' placeholder='patientID' name='patientID')
+  label AccountID  
+  input(type='text' placeholder='AccountID' name='AccountID')
   br
   br
   label DateTime  
@@ -92,6 +92,14 @@ form(method='POST' action='/api/create')
   br
   label Data :  
   input(type='text' placeholder='data' name='data')
+  br
+  br
+  label PHRHash :  
+  input(type='text' placeholder='PHRHash' name='PHRHash')
+  br
+  br
+  label CheckingBalance :  
+  input(type='number' placeholder='checkingBalance' name='checkingBalance')
   br
   br
 

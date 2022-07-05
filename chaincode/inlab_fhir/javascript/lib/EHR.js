@@ -14,39 +14,53 @@ class EHR extends Contract {
         console.info('============= START : Initialize Ledger ===========');
         const EHRs = [
             {
-                patientID: 'Alice27',
-                DateTime: '2022-3-5',
-                Organization: 'Dongguk',
-                patientName: 'Alice',
+                AccountID: 'sithu27',
+                DateTime: '2022-6-28',
+                Organization: 'INLab',
+                patientName: 'Sithu',
                 Function: 'Create',
-                data: 'Patient EHR'
+                data: 'Patient EHR',
+                PHRhash: 'rQZRVpG4phj1aSuke5yDtzV3Q0z2FnDseAPjRDrQLRHoLd6Xt1Vgqzu7s',
+                checkingBalance: 10000000,
+                phonenumber: '010-6386-7320',
 
             },
             {
-                patientID: 'Alice27',
-                DateTime: '2022-5-2',
-                Organization: 'KHPI',
-                patientName: 'Alice',
-                Function: 'Read',
-                data: 'Patient EHR'
-
+                AccountID: 'tony99',
+                DateTime: '2022-6-28',
+                Organization: 'INLab',
+                patientName: 'Tony',
+                Function: 'Create',
+                data: 'Patient EHR',
+                PHRhash: 'rQZRVpG4phj1aSuke5yDtzV3Q0z2FnDseAPjRDrQLRHoLd6Xt1Vgqzu7s',
+                checkingBalance: 10000000,
+                phonenumber: '010-6386-7320',
             },
             {
-                patientID: 'Alice27',
-                DateTime: '2022-7-6',
+                AccountID: 'Alice27',
+                DateTime: '2022-6-28',
                 Organization: 'Dongguk Hospital',
                 patientName: 'Alice',
-                Function: 'Update',
-                data: 'weight'
+                Function: 'Create',
+                data: 'weight',
+                PHRhash: 'rQZRVpG4phj1aSuke5yDtzV3Q0z2FnDseAPjRDrQLRHoLd6Xt1Vgqzu7s',
+                checkingBalance: 10000000,
+                phonenumber: '010-6386-7320',
+
+
             }
             ,
             {
-                patientID: 'Alice27',
-                DateTime: '2022-9-12',
+                AccountID: 'Bob12',
+                DateTime: '2022-6-28',
                 Organization: 'Dongguk Hospital',
                 patientName: 'Alice',
-                Function: 'Delete',
-                data: 'Patient EHR'
+                Function: 'Create',
+                data: 'Patient EHR',
+                PHRhash: 'rQZRVpG4phj1aSuke5yDtzV3Q0z2FnDseAPjRDrQLRHoLd6Xt1Vgqzu7s',
+                checkingBalance: 10000000,
+                phonenumber: '010-6386-7320',
+
             }
 
         ];
@@ -60,7 +74,7 @@ class EHR extends Contract {
     }
 
     async queryEHR(ctx, EHRNumber) {    
-        const accountAsBytes = await ctx.stub.getState(EHRNumber); // get the car from chaincode state
+        const accountAsBytes = await ctx.stub.getState(EHRNumber); // get the EHR from chaincode state
         if (!accountAsBytes || accountAsBytes.length === 0) {
             throw new Error(`${EHRNumber} does not exist`);
         }
@@ -69,25 +83,28 @@ class EHR extends Contract {
         return accountAsBytes.toString();
 
     }
-
-    async createEHR(ctx, EHRNumber, patientID, DateTime, Organization,patientName,Function,data) {
+    
+    async createEHR(ctx, EHRNumber, AccountID, DateTime, Organization,patientName,Function,data,PHRhash,checkingBalance,phonenumber) {
         console.info('============= START : Create EHR ===========');
 
         const EHR = {
-            patientID,
+            AccountID,
             docType: 'EHR',
             DateTime,
             Organization,
             patientName,
             Function,
-            data
+            data,
+            PHRhash,
+            checkingBalance,
+            phonenumber,
         };
 
         await ctx.stub.putState(EHRNumber, Buffer.from(JSON.stringify(EHR)));
         console.info('============= END : Create EHR ===========');
 
     }
-
+   
     async deleteEHR(ctx, EHRNumber) {
 
         await ctx.stub.deleteEHR(EHRNumber); // get the car from chaincode state
@@ -173,8 +190,69 @@ class EHR extends Contract {
         await ctx.stub.putState(EHRNumber, Buffer.from(JSON.stringify(account)));
         console.info('============= END : updateEHR ===========');
     }
-    // Query transactions
 
+
+    // Request PHR data from owner
+    async requestEHR(ctx,EHRNumber, doctor, maxtoken, reqdata  ) {
+        console.info('============= START : requestEHR ===========');
+
+        const accountAsBytes = await ctx.stub.getState(EHRNumber); // get the account from chaincode state
+        if (!accountAsBytes || accountAsBytes.length === 0) {
+            throw new Error(`${EHRNumber} does not exist`);
+        }
+        const account = JSON.parse(accountAsBytes.toString());
+        account.data = reqdata;
+        
+
+        await ctx.stub.putState(EHRNumber, Buffer.from(JSON.stringify(account)));
+        console.info('============= END : requestEHR ===========');
+    }
+    // Response PHR data from owner
+    async responseEHR(ctx, EHRNumber, doctor, token, responsedata) {
+        console.info('============= START : responseEHR ===========');
+
+        const accountAsBytes = await ctx.stub.getState(EHRNumber); // get the request
+        if (!accountAsBytes || accountAsBytes.length === 0) {
+            throw new Error(`${EHRNumber} does not exist`);
+        }
+        const account = JSON.parse(accountAsBytes.toString());
+        account.data = responsedata;
+
+        await ctx.stub.putState(EHRNumber, Buffer.from(JSON.stringify(account)));
+        console.info('============= END : responseEHR ===========');
+    }
+
+
+
+
+    // Invoke payment transactions
+    async sendPayment(ctx, sourceAccount, destAccount, amount){
+        console.info('============= START : sendPayment ===========');
+        const accountAsBytes = await ctx.stub.getState(sourceAccount);
+        const accAsBytes = await ctx.stub.getState(destAccount);
+        if (!accountAsBytes || accountAsBytes.length === 0) {
+            throw new Error(`${sourceAccount} does not exist`);
+        }
+        if (!accAsBytes || accAsBytes.length === 0) {
+            throw new Error(`${destAccount} does not exist`);
+        }
+        const sourceacc = JSON.parse(accountAsBytes.toString());
+        const destacc = JSON.parse(accAsBytes.toString());
+        // Source Account balance and transfer
+        const sourceBal = parseInt(sourceacc.checkingBalance) - amount;
+        sourceacc.checkingBalance = sourceBal ;
+        //sourceacc.ownership = '';
+        
+        // Destination Account balance and transfer
+        const destBal = parseInt(destacc.checkingBalance) + parseInt(amount); 
+        destacc.checkingBalance = destBal;
+        //destacc.ownership = 'Nike Jordan' ;
+   
+
+        await ctx.stub.putState(sourceAccount, Buffer.from(JSON.stringify(sourceacc)));
+        await ctx.stub.putState(destAccount, Buffer.from(JSON.stringify(destacc)));
+        console.info("============= END : sendPayment ===========");
+    }
     /**
      * Query history of a commercial paper
      * @param {Context} ctx the transaction context
@@ -195,4 +273,5 @@ class EHR extends Contract {
 }
 
 module.exports = EHR;
+
 
