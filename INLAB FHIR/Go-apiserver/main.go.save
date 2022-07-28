@@ -1,0 +1,26 @@
+package main
+import ("net/http"
+	"encoding/json"
+)
+
+var users = map[string]*User{}
+
+type User struct {
+	Nickname string `json:"nickname"`
+	Email string `json:"email"`
+
+}
+
+
+func main(){
+	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request){
+		switch r.Method {
+		case http.MethodGet: // search
+			json.NewEncoder(wr).Encode(users)// Encoding	
+		case http.MethodPost: // register
+			var user User
+			json.NewDecoder(r.Body).Decode(&user) // Decoding
+			
+			users[user.Email] = &user
+		
+			json.NewEncoder(wr).En

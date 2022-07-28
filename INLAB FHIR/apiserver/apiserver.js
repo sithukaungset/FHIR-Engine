@@ -346,6 +346,51 @@ app.get('/api/query/:PHR_index', async function(req, res){
     process.exit(1);
     }
     });
+
+app.get('/api/Signin', async function(req, res){
+    try{
+        const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
+        const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
+
+        // Create a new file system based wallet for managing identities.
+        const walletPath = path.join(process.cwd(), 'wallet');
+        const wallet = await Wallets.newFileSystemWallet(walletPath);
+        console.log(`Wallet path: ${walletPath}`);
+
+        // Check to see if we've already enrolled the user.
+        const identity = await wallet.get('appUser');
+        if (!identity) {
+            console.log('An identity for the user "appUser" does not exist in the wallet');
+            console.log('Run the registerUser.js application before retrying');
+        return;
+        }
+        // Create a new gateway for connecting to our peer node.
+        const gateway = new Gateway();
+        await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
+
+        // Get the network (channel) our contract is deployed to.
+        const network = await gateway.getNetwork('mychannel');
+
+        // Get the contract from the network.
+        const contract = network.getContract('inlab_fhir');
+        // Evaluate the specified transaction.
+        // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
+        // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
+        const result = await contract.evaluateTransaction('queryEHR',req.body.PHR_index);
+
+
+        console.log(JSON.parse(result));
+        console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        //res.send("Successful Transaction");
+        res.send(JSON.parse(result));
+
+    }
+    catch (error) {
+    console.error(`Failed to evaluate transaction: ${error}`);
+    res.status(500).json({error:error});
+    process.exit(1);
+    }
+    });
  
 // Create Account
 app.post('/api/createAcc/',  urlencodedParser, async function(req, res){
@@ -377,7 +422,7 @@ app.post('/api/createAcc/',  urlencodedParser, async function(req, res){
         // Evaluate the specified transaction.
         // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
         // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-        await contract.submitTransaction('createEHR',req.body.AccountID,'','', '',req.body.PersonName,'', '','',req.body.CryptoBalance,'');
+        await contract.submitTransaction('createEHR',req.body.AccountID,req.body.PersonName,'', '',req.body.PatientName,'', '','',req.body.CryptoBalance,req.body.phonenumber);
         console.log('Transaction has been submitted');
         res.send("Successful Transaction");
         //res.render('complete');
@@ -566,33 +611,40 @@ app.post('/api/sendPayment/',  urlencodedParser, async function(req, res){
 
 
 app.get('/api/BlockScanner', async function (req,res){
-    try{
+    try {
+        // Set up the wallet - just use Org2's wallet (isabella)
         const ccpPath = path.resolve(__dirname, '..', '..', 'test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
-        const ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
+        let ccp = JSON.parse(fs.readFileSync(ccpPath, 'utf8'));
 
-        // Create a new file system based wallet for managing identities.
+        // Create a new gateway for connecting to our peer node.
         const walletPath = path.join(process.cwd(), 'wallet');
         const wallet = await Wallets.newFileSystemWallet(walletPath);
         console.log(`Wallet path: ${walletPath}`);
-
-        // Check to see if we've already enrolled the user.
+        
         const identity = await wallet.get('appUser');
         if (!identity) {
             console.log('An identity for the user "appUser" does not exist in the wallet');
             console.log('Run the registerUser.js application before retrying');
-        return;
+            return;
         }
-        // Create a new gateway for connecting to our peer node.
+
+        
         const gateway = new Gateway();
+        
         await gateway.connect(ccp, { wallet, identity: 'appUser', discovery: { enabled: true, asLocalhost: true } });
-        // Get the network (channel) our contract is deployed to.
+
+        // Load connection profile; will be used to locate a gateway
         const network = await gateway.getNetwork('mychannel');
+
         // Get the contract from the network.
-        //const contract = network.getContract('inlab_fhir');
-        // Evaluate the specified transaction.
-        // queryCar transaction - requires 1 argument, ex: ('queryCar', 'CAR4')
-        // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-        //finished = false;
+
+
+
+  
+        // connect to the gateway
+
+        // Listen for blocks being added, display relevant contents: in particular, the transaction inputs
+        finished = false;
         
         const listener = async (event) => {
             if (event.blockData !== undefined) {
@@ -645,13 +697,15 @@ app.get('/api/BlockScanner', async function (req,res){
         };
         await network.addBlockListener(listener, options);
         
-        // while (!finished) {
-        //     await new Promise(resolve => setTimeout(resolve, 5000));
-        //     // Disconnect from the gateway after Promise is resolved.
-        //     // ... do other things
-        // }
-        res.send("Successful Transaction");
+        while (!finished) {
+            await new Promise(resolve => setTimeout(resolve, 500));
+            // Disconnect from the gateway after Promise is resolved.
+            res.send("Successful Transaction");
+
+            // ... do other things
+        }
         gateway.disconnect();
+        
     }
     catch (error) {
         console.error('Error: ', error);
