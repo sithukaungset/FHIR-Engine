@@ -177,7 +177,7 @@ class EHR extends Contract {
         }
     }
 
-    async updateEHR(ctx, EHRNumber, newweight) {
+    async updateEHR(ctx, EHRNumber, newpatientName, newphonenumber) {
         console.info('============= START : updateEHR ===========');
 
         const accountAsBytes = await ctx.stub.getState(EHRNumber); // get the account from chaincode state
@@ -185,11 +185,29 @@ class EHR extends Contract {
             throw new Error(`${EHRNumber} does not exist`);
         }
         const account = JSON.parse(accountAsBytes.toString());
-        account.weight = newweight;
+        account.patientName = newpatientName;
+        account.phonenumber = newphonenumber;
+
+        await ctx.stub.putState(EHRNumber, Buffer.from(JSON.stringify(account)));
+        console.info('============= END : updateEHR ==========='); 
+    }
+
+    async chargeAccount(ctx,EHRNumber, chargeamount) {
+        console.info('============= START : updateEHR ===========');
+
+        const accountAsBytes = await ctx.stub.getState(EHRNumber); // get the account from chaincode state
+        if (!accountAsBytes || accountAsBytes.length === 0) {
+            throw new Error(`${EHRNumber} does not exist`);
+        }
+        const account = JSON.parse(accountAsBytes.toString());
+        
+        const accBal = parseInt(account.checkingBalance) + parseInt(chargeamount); 
+        account.checkingBalance = accBal;
 
         await ctx.stub.putState(EHRNumber, Buffer.from(JSON.stringify(account)));
         console.info('============= END : updateEHR ===========');
     }
+
 
 
     // Request PHR data from owner
